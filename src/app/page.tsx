@@ -6,8 +6,7 @@ import ScheduleTab from "@/components/ScheduleTab";
 export default function Home() {
   return (
     <div className="container mx-auto py-10 space-y-16">
-      {/* <ResultsTab matches={matches} />
-      <ScheduleTab matches={matches} /> */}
+     
     </div>
   );
 }

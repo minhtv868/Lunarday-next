@@ -4,26 +4,25 @@ import type { Metadata } from "next";
 type SeoProps = {
   title: string;
   description: string;
-  url?: string;       // canonical URL
-  image?: string;     // thumbnail khi share
-  robots?: string;    // index, follow | noindex, nofollow
-  keywords?: string[]; // từ khóa SEO
+  url?: string;
+  image?: string;
+  robots?: string;
+  keywords?: string[];
 };
 
 export function generateMetadata({
   title,
   description,
-  url,
-  image,
+  url = "",
+  image = "/default-share.jpg",
   robots = "index, follow",
-  keywords,
+  keywords = [],
 }: SeoProps): Metadata {
   return {
     title,
     description,
-    keywords: keywords && keywords.length > 0 ? keywords.join(", ") : undefined,
+    keywords: keywords.length ? keywords.join(", ") : undefined,
     robots,
-
     alternates: url ? { canonical: url } : undefined,
 
     openGraph: {
@@ -31,23 +30,21 @@ export function generateMetadata({
       description,
       url,
       type: "website",
-      images: image
-        ? [
-            {
-              url: image,
-              width: 1200,
-              height: 630,
-              alt: title,
-            },
-          ]
-        : undefined,
+      images: [
+        {
+          url: image,
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
     },
 
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: image ? [image] : undefined,
+      images: [image],
     },
 
     icons: {
