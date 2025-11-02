@@ -3,7 +3,8 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import CalendarCalculator from "viet-lunar-calendar";
-
+import { XemNgayTotXauModel } from '@/types/xemngay';
+import {xemNgayApi} from '@/lib/api';
 
 export default function LichAmPage() {
   const today = new Date();

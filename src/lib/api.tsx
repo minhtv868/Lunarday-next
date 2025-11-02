@@ -5,7 +5,7 @@ import type { PaginatedResult } from "@/types/paginated";
 import { Match } from "@/types/match";
 import https from "https";
 import { Seo } from "@/types/seo";
-
+import { XemNgayTotXauModel } from "@/types/xemngay";
 // Configuration
 const CONFIG = {
   API_KEY: process.env.NEXT_PUBLIC_API_KEY || "1234",
@@ -180,6 +180,54 @@ export const getSeoApi = {
     }
   }
 };
+
+export const xemNgayApi = {
+  async getLichNgay(params: { date: string; NumbDay: number; type: number }): 
+    Promise<XemNgayTotXauModel> 
+  {
+    try {
+      const response = await api.get("/api/TuVi/LichNgay", { params });
+
+      const result = response.data;
+
+      if (!result?.succeeded) {
+        throw new Error(result?.messages?.[0] ?? "Call API Lịch Ngày thất bại");
+      }
+
+      // ✅ chuyển JSON string -> object
+      const data: XemNgayTotXauModel = result.data
+        ? result.data
+        : null;
+
+      if (!data) {
+        throw new Error("Không có dữ liệu lịch ngày");
+      }
+
+      return data;
+    } catch (error) {
+      console.error("[Lịch Ngày API Error]:", error);
+      throw new Error("Không thể tải thông tin lịch ngày");
+    }
+  },
+   async getXemNgayHomNay() {
+  const today = new Date();
+  
+  // Lấy ngày, tháng, năm
+  const dd = String(today.getDate()).padStart(2, '0');   // ngày 2 chữ số
+  const mm = String(today.getMonth() + 1).padStart(2, '0'); // tháng 2 chữ số (0-indexed)
+  const yyyy = today.getFullYear();
+
+  const formattedDate = `${dd}-${mm}-${yyyy}`; // dd-mm-yyyy
+
+  return await this.getLichNgay({
+    date: formattedDate,
+    NumbDay: 0,
+    type: 0
+  });
+}
+
+};
+
 
 // Utility functions
 export const apiUtils = {

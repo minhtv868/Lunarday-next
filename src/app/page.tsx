@@ -1,6 +1,9 @@
 'use client';
 import { Calendar, Clock, Star, TrendingUp, Coins, Newspaper, ChevronRight } from 'lucide-react';
-
+import { XemNgayTotXauModel } from '@/types/xemngay';
+import {xemNgayApi} from '@/lib/api';
+import { useEffect, useState } from "react";
+import DailyCalendar from '@/components/lunar/DailyCalendar';
 export default function HomePage() {
   const zodiacs = [
     { name: 'Tý', emoji: '🐭', color: 'from-blue-500 to-blue-600' },
@@ -39,11 +42,71 @@ export default function HomePage() {
       tag: 'Hôn nhân'
     }
   ];
+  const today = new Date();
+        const dd = String(today.getDate()).padStart(2, '0');
+        const mm = String(today.getMonth() + 1).padStart(2, '0');
+        const yyyy = today.getFullYear();
+       let formattedDate = `${dd}-${mm}-${yyyy}`;
+   const [dataHomNay, setDataHomNay] = useState<XemNgayTotXauModel | null>(null);
 
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     const result = await xemNgayApi.getXemNgayHomNay();
+  //     setDataHomNay(result);
+  //     console.log('Dữ liệu lịch ngày hôm nay:', result);
+  //   }
+  //   fetchData();
+  // }, []);
+
+  // if (!dataHomNay) return <p>Đang tải...</p>;
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
       <div className="max-w-6xl mx-auto px-4 py-6 sm:py-8 space-y-6 sm:space-y-8">
-        
+        <aside>
+{/* ✅ Box lịch âm kiểu thẻ lớn */}
+{/* <div className="p-4 bg-gradient-to-b from-pink-50 to-white shadow-md rounded-xl text-center border border-pink-200">
+<h3 className="text-sm font-bold text-pink-700 uppercase">THÁNG 11 NĂM 2025</h3>
+<div className="text-6xl font-extrabold text-pink-600 mt-2">2</div>
+<p className="text-lg font-semibold mt-1">Chủ nhật</p>
+<p className="text-red-600 mt-1 text-sm">★ Lễ hội chùa Keo (Thái Bình)</p>
+
+
+<p className="italic text-xs text-gray-600 mt-2">Bí mật của một cuộc hôn nhân tốt đẹp là tha thứ cho bạn đời vì đã lấy mình.</p>
+<p className="italic text-xs text-gray-500 mb-3">- Sacha Guitry -</p>
+
+
+<div className="grid grid-cols-2 text-left text-sm gap-2 border-t pt-2">
+<div>
+<p className="font-bold text-pink-700">13</p>
+<p>Ngày Hoàng đạo</p>
+<p>Năm Ất Tỵ</p>
+<p>Tháng Bình Tuất</p>
+<p>Ngày Ất Hợi</p>
+<p>09:48:36</p>
+<p>Giờ Tân Tỵ</p>
+<p>Tiết khí: Sương giáng</p>
+</div>
+<div>
+<p className="font-bold text-pink-700">Giờ Hoàng đạo:</p>
+<p>Đinh Sửu (1h-3h)</p>
+<p>Canh Thìn (7h-9h)</p>
+<p>Nhâm Ngọ (11h-13h)</p>
+<p>Quý Mùi (13h-15h)</p>
+<p>Bính Tuất (19h-21h)</p>
+<p>Đinh Hợi (21h-23h)</p>
+</div>
+</div>
+
+
+<div className="flex justify-between text-xs text-pink-600 font-medium mt-2">
+<button className="hover:underline">Hôm qua</button>
+<button className="hover:underline">Hôm nay</button>
+<button className="hover:underline">Ngày mai</button>
+</div>
+</div> */}
+
+          <DailyCalendar date={formattedDate} />
+</aside>
         {/* Hero Section */}
         <section className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 rounded-3xl shadow-xl p-6 sm:p-8 text-white">
           <div className="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full -mr-32 -mt-32"></div>

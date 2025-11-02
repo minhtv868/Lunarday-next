@@ -28,3 +28,21 @@ body {
 .bg-header {
   background-color: #e9b1f2;
 }
+button:hover {
+  cursor: pointer;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+.calendar-info1 {
+    font-weight: bold;
+    height: 40px;
+    width: 100%;
+    float: left;
+    line-height: 40px;
+    margin-bottom: 10px;
+}
+.img-12congiap {
+    height: 40px;
+}
