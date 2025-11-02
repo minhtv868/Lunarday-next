@@ -3,12 +3,12 @@ import Link from 'next/link';
 import { useState, useRef, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { 
-  Menu, X, ChevronDown, Calendar, Clock, Star, Award, TrendingUp, Home, Newspaper, 
+  Menu, X, ChevronDown, Calendar, Clock, Star, Award, TrendingUp, Home, 
   BarChart3, Coins
 } from 'lucide-react';
 
 interface MenuItem {
-  icon: any;
+  icon: React.ElementType;
   label: string;
   href: string;
 }
@@ -49,9 +49,8 @@ export default function Navbar() {
     lich_am: {
       title: 'Lịch âm',
       items: [
-        { icon: Calendar, label: 'Hôm nay', href: '/lich-am-hom-nay' },
-        { icon: Clock, label: 'Theo tháng', href: '/lich-am-theo-thang' },
-        { icon: BarChart3, label: 'Chuyển đổi âm dương', href: '/doi-lich-am-duong' }
+        { icon: Calendar, label: 'Lịch ngày', href: '/' },
+        { icon: Calendar, label: 'Lịch âm', href: '/lich-am-duong-hom-nay' },
       ]
     },
     ngay_tot: {

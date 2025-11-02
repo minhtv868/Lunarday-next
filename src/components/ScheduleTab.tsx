@@ -1,3 +1,4 @@
+import Image from 'next/image';
 // app/components/ScheduleTab.tsx
 import { Match } from "@/types/match";
 import {
@@ -5,7 +6,6 @@ import {
   MapPin,
   Calendar as CalendarIcon,
   Trophy,
-  Users,
 } from "lucide-react";
 
 interface ScheduleTabProps {
@@ -117,11 +117,12 @@ const upcomingMatches = matches
                           <div className="flex flex-col items-center space-y-3 min-w-[120px]">
                             <div className="relative">
                               <div className="w-14 h-14 rounded-full bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center shadow-sm">
-                                <img
+                                <Image
                                   src={match.homeLogoPath}
                                   alt={match.homeName}
                                   className="w-10 h-10 object-contain"
-                                  loading="lazy"
+                                  width={40}
+                                  height={40}
                                 />
                               </div>
                             </div>
@@ -185,11 +186,12 @@ const upcomingMatches = matches
                           <div className="flex flex-col items-center space-y-3 min-w-[120px]">
                             <div className="relative">
                               <div className="w-14 h-14 rounded-full bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center shadow-sm">
-                                <img
+                                <Image
                                   src={match.awayLogoPath}
                                   alt={match.awayName}
                                   className="w-10 h-10 object-contain"
-                                  loading="lazy"
+                                  width={40}
+                                  height={40}
                                 />
                               </div>
                             </div>

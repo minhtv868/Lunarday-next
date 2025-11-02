@@ -10,7 +10,6 @@ export default function LichAmPage() {
   const [currentDate, setCurrentDate] = useState(today);
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
-  const day = currentDate.getDate();
   const calendar = new CalendarCalculator();
   const lunar = calendar.getLunarDate(today);
   const firstDay = new Date(year, month, 1);
@@ -124,7 +123,7 @@ export default function LichAmPage() {
               return (
                 <Link
                   key={index}
-                  href={`/lich-am-ngay-${dateString}`}
+                  href={`/lich-am-duong-${dateString}`}
                   className={`aspect-square border-2 rounded-xl p-1 sm:p-2 hover:bg-red-50 transition-all duration-200 cursor-pointer transform hover:scale-105 hover:shadow-lg ${
                     isToday ? 'border-red-500 bg-gradient-to-br from-red-100 to-orange-100 shadow-md' : 'border-gray-200 hover:border-red-300'
                   }`}

@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { TrendingUp, Grid, List, Clock, Eye } from "lucide-react";
+import { useState, useEffect, useCallback } from "react";
+import { TrendingUp, Grid, List, Clock } from "lucide-react";
 import NewsCard from "./NewsCard";
 import { Article } from "../types/article";
 import { articleApi } from "../lib/api";
@@ -20,7 +20,7 @@ export default function NewsGrid({ initialArticles = [] }: NewsGridProps) {
   const pageSize = 12;
 
   // Load articles from API
-  const loadArticles = async (page: number = 1, reset: boolean = false) => {
+  const loadArticles = useCallback(async (page: number = 1, reset: boolean = false) => {
     setLoading(true);
     try {
       const response = await articleApi.getPage({
@@ -45,32 +45,20 @@ export default function NewsGrid({ initialArticles = [] }: NewsGridProps) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [initialArticles, pageSize]);
 
   // Initial load
   useEffect(() => {
     if (initialArticles.length === 0) {
       loadArticles(1, true);
     }
-  }, []);
+  }, [initialArticles.length, loadArticles]);
 
   // Handle load more
   const handleLoadMore = () => {
     if (hasMorePages && !loading) {
       loadArticles(currentPage + 1, false);
     }
-  };
-
-  // Format date for display
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('vi-VN', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
   };
 
   const featuredArticles = articles.slice(0, 4); // Top 3 for featured section

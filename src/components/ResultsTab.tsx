@@ -1,3 +1,4 @@
+import Image from 'next/image';
 // app/components/ResultsTab.tsx
 import { Match } from '@/types/match'
 import { Trophy, MapPin, Calendar as CalendarIcon, Play, Clock, TrendingUp, Users, Star } from 'lucide-react'
@@ -50,9 +51,9 @@ export default function ResultsTab({ matches }: ResultsTabProps) {
   }
 
   const getWinnerStatus = (match: Match) => {
-    // if (match.homeGoals === null || match.awayGoals === null) return 'none'
-    // if (match.homeGoals > match.awayGoals) return 'home'
-    // if (match.awayGoals > match.homeGoals) return 'away'
+    if (match.homeGoals === null || match.awayGoals === null) return 'none'
+    if (match.homeGoals > match.awayGoals) return 'home'
+    if (match.awayGoals > match.homeGoals) return 'away'
     return 'draw'
   }
 
@@ -100,11 +101,12 @@ export default function ResultsTab({ matches }: ResultsTabProps) {
                         ? 'bg-gradient-to-br from-green-100 to-emerald-200 ring-2 ring-green-400 ring-offset-2' 
                         : 'bg-gradient-to-br from-gray-50 to-gray-100'
                     }`}>
-                      <img
+                      <Image
                         src={match.homeLogoPath}
                         alt={match.homeName}
                         className="w-12 h-12 object-contain"
-                        loading="lazy"
+                        width={48}
+                        height={48}
                       />
                     </div>
                     {winnerStatus === 'home' && (
@@ -170,11 +172,12 @@ export default function ResultsTab({ matches }: ResultsTabProps) {
                         ? 'bg-gradient-to-br from-green-100 to-emerald-200 ring-2 ring-green-400 ring-offset-2' 
                         : 'bg-gradient-to-br from-gray-50 to-gray-100'
                     }`}>
-                      <img
+                      <Image
                         src={match.awayLogoPath}
                         alt={match.awayName}
                         className="w-12 h-12 object-contain"
-                        loading="lazy"
+                        width={48}
+                        height={48}
                       />
                     </div>
                     {winnerStatus === 'away' && (

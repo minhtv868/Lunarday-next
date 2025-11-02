@@ -1,6 +1,6 @@
 "use client";
 // pages/savings-calculator.tsx
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import { ArrowLeft, PiggyBank, TrendingUp, Calendar, DollarSign } from 'lucide-react'
@@ -16,7 +16,7 @@ export default function SavingsCalculator() {
     monthlyGrowth: [] as Array<{month: number, amount: number, interest: number}>
   })
 
-  const calculateSavings = () => {
+  const calculateSavings = useCallback(() => {
     const p = parseFloat(principal) || 0
     const r = parseFloat(interestRate) / 100 || 0
     const t = parseFloat(term) || 0
@@ -40,11 +40,11 @@ export default function SavingsCalculator() {
       totalInterest,
       monthlyGrowth
     })
-  }
+  }, [principal, interestRate, term, compoundFrequency])
 
   useEffect(() => {
     calculateSavings()
-  }, [principal, interestRate, term, compoundFrequency])
+  }, [calculateSavings])
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('vi-VN', {
