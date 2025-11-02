@@ -60,65 +60,82 @@ export default function DailyCalendar({ date }: DailyCalendarProps) {
   if (!resulDay) {
     return (
       <div className="flex items-center justify-center min-h-[400px] bg-gradient-to-br from-rose-50 via-pink-50 to-orange-50 rounded-3xl">
-        <div className="animate-pulse text-rose-600 font-semibold">Đang tải...</div>
+        <div className="animate-pulse text-rose-600 font-semibold">
+          Đang tải...
+        </div>
       </div>
     );
   }
 
   const weekday = resulDay?.solarDate
-    ? new Date(resulDay.solarDate).toLocaleDateString("vi-VN", { weekday: "long" })
+    ? new Date(resulDay.solarDate).toLocaleDateString("vi-VN", {
+        weekday: "long",
+      })
     : "??";
-  const dayNumber = resulDay?.solarDate ? new Date(resulDay.solarDate).getDate() : "?";
+  const dayNumber = resulDay?.solarDate
+    ? new Date(resulDay.solarDate).getDate()
+    : "?";
 
   return (
     <div className="w-full max-w-md mx-auto p-3 sm:p-4">
-      {/* Navigation Controls */}
-      <div className="mb-4 flex items-center justify-between gap-2">
-        {/* Month Navigation */}
-        <button
-          onClick={() => changeMonth(-1)}
-          className="p-2 sm:p-2.5 rounded-xl bg-white shadow-md hover:shadow-lg hover:bg-rose-50 transition-all active:scale-95 border border-rose-100"
-          title="Tháng trước"
-        >
-          <svg className="w-5 h-5 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
-          </svg>
-        </button>
-
-        {/* Today Button */}
-        <button
-          onClick={goToToday}
-          className="flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-2.5 rounded-xl bg-gradient-to-r from-rose-500 to-pink-500 text-white shadow-lg hover:shadow-xl hover:from-rose-600 hover:to-pink-600 transition-all active:scale-95 font-semibold text-sm"
-        >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-          </svg>
-          <span className="hidden sm:inline">Hôm nay</span>
-          <span className="sm:hidden">Nay</span>
-        </button>
-
-        {/* Month Navigation */}
-        <button
-          onClick={() => changeMonth(1)}
-          className="p-2 sm:p-2.5 rounded-xl bg-white shadow-md hover:shadow-lg hover:bg-rose-50 transition-all active:scale-95 border border-rose-100"
-          title="Tháng sau"
-        >
-          <svg className="w-5 h-5 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 5l7 7-7 7M5 5l7 7-7 7" />
-          </svg>
-        </button>
-      </div>
-
       {/* Main Calendar Card */}
       <div className="bg-white rounded-3xl shadow-2xl overflow-hidden border border-rose-100">
-        {/* Header */}
-        <div className="bg-gradient-to-r from-rose-500 via-pink-500 to-orange-400 text-white py-4 sm:py-5 px-6 text-center relative overflow-hidden">
+        {/* Header with Month Navigation */}
+        <div className="bg-gradient-to-r from-rose-500 via-pink-500 to-orange-400 text-white py-4 sm:py-5 px-4 sm:px-6 relative overflow-hidden">
           <div className="absolute inset-0 bg-white/10 backdrop-blur-sm"></div>
-          <div className="relative z-10">
-            <h3 className="text-sm font-bold uppercase tracking-wider opacity-95">
-              Tháng {resulDay?.lunarMonth ?? "?"} Năm {resulDay?.lunarYear ?? "?"}
-            </h3>
-            <p className="text-base sm:text-lg font-medium mt-1 capitalize">{weekday}</p>
+          <div className="relative z-10 flex items-center justify-between">
+            {/* Month Previous Button */}
+            <button
+              onClick={() => changeMonth(-1)}
+              className="p-2 rounded-lg bg-white/20 hover:bg-white/30 transition-all active:scale-95 backdrop-blur-sm"
+              title="Tháng trước"
+            >
+              <svg
+                className="w-5 h-5 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M11 19l-7-7 7-7m8 14l-7-7 7-7"
+                />
+              </svg>
+            </button>
+
+            {/* Month/Year Info */}
+            <div className="text-center">
+              <h3 className="text-sm font-bold uppercase tracking-wider opacity-95">
+                Tháng {resulDay?.lunarMonth ?? "?"} Năm{" "}
+                {resulDay?.lunarYear ?? "?"}
+              </h3>
+              <p className="text-base sm:text-lg font-medium mt-1 capitalize">
+                {weekday}
+              </p>
+            </div>
+
+            {/* Month Next Button */}
+            <button
+              onClick={() => changeMonth(1)}
+              className="p-2 rounded-lg bg-white/20 hover:bg-white/30 transition-all active:scale-95 backdrop-blur-sm"
+              title="Tháng sau"
+            >
+              <svg
+                className="w-5 h-5 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M13 5l7 7-7 7M5 5l7 7-7 7"
+                />
+              </svg>
+            </button>
           </div>
         </div>
 
@@ -129,23 +146,70 @@ export default function DailyCalendar({ date }: DailyCalendarProps) {
           </div>
         </div>
 
-        {/* Lunar Info Card */}
+        {/* Lunar Info Card with Day Navigation */}
         <div className="px-4 sm:px-6 py-4 sm:py-5 bg-gradient-to-br from-rose-50/80 to-orange-50/80">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <img
-              className="w-10 h-10 sm:w-12 sm:h-12 drop-shadow-lg"
-              src={resulDay?.srcImage}
-              alt="Con giáp"
-            />
-            <div className="text-center">
-              <p className="text-xl sm:text-2xl font-bold text-rose-700">
-                {resulDay?.lunarDay ?? "??"}
-              </p>
-              <p className="text-xs uppercase tracking-wide text-rose-600 font-semibold mt-1">
-                Tháng {THANG[resulDay?.lunarMonth - 1]}
-                {resulDay?.lunarLeap === 1 && <span className="ml-1">(Nhuận)</span>}
-              </p>
+          <div className="flex items-center justify-between gap-3 mb-4">
+            {/* Day Previous Button */}
+            <button
+              onClick={() => changeDay(-1)}
+              className="p-2 rounded-lg bg-white shadow-md hover:shadow-lg hover:bg-rose-50 transition-all active:scale-95 border border-rose-100"
+              title="Hôm qua"
+            >
+              <svg
+                className="w-5 h-5 text-rose-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+            </button>
+
+            {/* Lunar Date Info */}
+            <div className="flex items-center gap-3">
+              <img
+                className="w-10 h-10 sm:w-12 sm:h-12 drop-shadow-lg"
+                src={resulDay?.srcImage}
+                alt="Con giáp"
+              />
+              <div className="text-center">
+                <p className="text-xl sm:text-2xl font-bold text-rose-700">
+                  {resulDay?.lunarDay ?? "??"}
+                </p>
+                <p className="text-xs uppercase tracking-wide text-rose-600 font-semibold mt-1">
+                  Tháng {THANG[resulDay?.lunarMonth - 1]}
+                  {resulDay?.lunarLeap === 1 && (
+                    <span className="ml-1">(Nhuận)</span>
+                  )}
+                </p>
+              </div>
             </div>
+
+            {/* Day Next Button */}
+            <button
+              onClick={() => changeDay(1)}
+              className="p-2 rounded-lg bg-white shadow-md hover:shadow-lg hover:bg-rose-50 transition-all active:scale-95 border border-rose-100"
+              title="Ngày mai"
+            >
+              <svg
+                className="w-5 h-5 text-rose-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </button>
           </div>
 
           <div className="text-center mb-4">
@@ -171,25 +235,35 @@ export default function DailyCalendar({ date }: DailyCalendarProps) {
             <div className="space-y-1.5">
               <p className="flex justify-between items-center">
                 <span className="text-gray-600">Năm:</span>
-                <span className="font-semibold text-gray-800">{resulDay?.canChiInfo?.[2] ?? "?"}</span>
+                <span className="font-semibold text-gray-800">
+                  {resulDay?.canChiInfo?.[2] ?? "?"}
+                </span>
               </p>
               <p className="flex justify-between items-center">
                 <span className="text-gray-600">Tháng:</span>
-                <span className="font-semibold text-gray-800">{resulDay?.canChiInfo?.[1] ?? "?"}</span>
+                <span className="font-semibold text-gray-800">
+                  {resulDay?.canChiInfo?.[1] ?? "?"}
+                </span>
               </p>
               <p className="flex justify-between items-center">
                 <span className="text-gray-600">Ngày:</span>
-                <span className="font-semibold text-gray-800">{resulDay?.canChiInfo?.[0] ?? "?"}</span>
+                <span className="font-semibold text-gray-800">
+                  {resulDay?.canChiInfo?.[0] ?? "?"}
+                </span>
               </p>
               <p className="flex justify-between items-center">
                 <span className="text-gray-600">Giờ:</span>
-                <span className="font-semibold text-gray-800">{resulDay?.canChiInfo?.[3] ?? "?"}</span>
+                <span className="font-semibold text-gray-800">
+                  {resulDay?.canChiInfo?.[3] ?? "?"}
+                </span>
               </p>
             </div>
             {resulDay?.tietKhi && (
               <p className="flex justify-between items-center pt-2 border-t border-gray-200">
                 <span className="text-gray-600">Tiết khí:</span>
-                <span className="font-semibold text-rose-600 text-xs sm:text-sm">{resulDay.tietKhi}</span>
+                <span className="font-semibold text-rose-600 text-xs sm:text-sm">
+                  {resulDay.tietKhi}
+                </span>
               </p>
             )}
           </div>
@@ -213,35 +287,27 @@ export default function DailyCalendar({ date }: DailyCalendarProps) {
           </div>
         </div>
 
-        {/* Day Navigation Footer */}
-        <div className="px-4 sm:px-6 py-4 bg-gradient-to-r from-rose-50/80 to-orange-50/80 border-t border-rose-100">
-          <div className="flex items-center justify-between gap-2">
+        {/* Footer with Today Button */}
+        {/* <div className="px-4 sm:px-6 py-4 bg-gradient-to-r from-rose-50/80 to-orange-50/80 border-t border-rose-100">
+          <div className="flex flex-col items-center gap-2">
             <button
-              onClick={() => changeDay(-1)}
-              className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 rounded-xl bg-white shadow-md hover:shadow-lg hover:bg-rose-50 transition-all active:scale-95 text-xs sm:text-sm font-semibold text-rose-700 border border-rose-100"
+              onClick={goToToday}
+              className="flex items-center gap-2 px-5 sm:px-6 py-2 rounded-lg bg-gradient-to-r from-rose-500 to-pink-500 text-white shadow-md hover:shadow-lg hover:from-rose-600 hover:to-pink-600 transition-all active:scale-95 font-semibold text-sm"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
-              <span className="hidden sm:inline">Hôm qua</span>
-              <span className="sm:hidden">Qua</span>
+              Hôm nay
             </button>
-
-            <p className="text-xs sm:text-sm text-gray-600 font-medium px-2">
+            <p className="text-xs text-gray-500 font-medium">
               {currentDate.toLocaleDateString("vi-VN")}
             </p>
-
-            <button
-              onClick={() => changeDay(1)}
-              className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 rounded-xl bg-white shadow-md hover:shadow-lg hover:bg-rose-50 transition-all active:scale-95 text-xs sm:text-sm font-semibold text-rose-700 border border-rose-100"
-            >
-              <span className="hidden sm:inline">Ngày mai</span>
-              <span className="sm:hidden">Mai</span>
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
           </div>
+        </div> */}
+        <div className="flex justify-between text-xs text-pink-600 font-medium mb-6">
+          <button className="hover:underline pl-5">Hôm qua</button>
+          <button className="hover:underline">Hôm nay</button>
+          <button className="hover:underline pr-5">Ngày mai</button>
         </div>
       </div>
 
@@ -252,7 +318,6 @@ export default function DailyCalendar({ date }: DailyCalendarProps) {
     </div>
   );
 }
-
 
 // "use client";
 
