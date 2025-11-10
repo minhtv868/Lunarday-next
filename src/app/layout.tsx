@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import { SITE_DOMAIN } from "@/constants/config";
-import AdBanner from "@/components/AddBaner";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
+import { CONFIG } from "@/constants/config";
+import AdBanner from "@/components/layout/AddBaner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,37 +18,23 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "MoneyMate - Quản lý tài chính Gen Z",
+  title: "Lịch Âm Hôm Nay – Xem Ngày Tốt, Giờ Hoàng Đạo, Lịch Vạn Niên 2025",
   description:
-    "Cập nhật giá vàng SJC, DOJI, PNJ, lãi suất ngân hàng, tỷ giá Bitcoin, Ethereum và tin tức tài chính mới nhất hôm nay. Dữ liệu liên tục, chính xác.",
+    "Xem lịch âm hôm nay nhanh nhất: ngày dương, ngày âm, can chi, giờ hoàng đạo, việc nên và không nên. Cập nhật chính xác theo lịch vạn niên Việt Nam.",
   keywords:
-    "giá vàng, vàng hôm nay, lãi suất ngân hàng, coin, bitcoin, ethereum, tài chính, đầu tư, tin tức, lịch âm, lịch vạn niên",
+    "lịch âm hôm nay, lịch dương âm, ngày hoàng đạo, giờ hoàng đạo, lịch vạn niên, đổi ngày âm dương, xem ngày tốt",
+  alternates: { canonical: `${CONFIG.SITE.DOMAIN}/lich-am-hom-nay` },
   openGraph: {
-    title: "Cập nhật giá vàng, lãi suất, coin và lịch âm",
+    title: "Lịch Âm Hôm Nay – Xem Ngày Tốt, Giờ Hoàng Đạo",
     description:
-      "Giá vàng trong nước, lãi suất tiết kiệm, tỷ giá coin, lịch âm và phân tích tài chính mỗi ngày.",
-    url: SITE_DOMAIN,
-    siteName: "MoneyMate - Thông tin tài chính Việt Nam",
-    type: "website",
-    images: [
-      {
-        url: "https://yourdomain.com/og-home.jpg",
-        width: 1200,
-        height: 630,
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Thông tin giá vàng, lãi suất, coin và lịch âm",
-    description:
-      "Giá vàng, lãi suất ngân hàng, tỷ giá coin, lịch âm và phân tích đầu tư được cập nhật liên tục.",
-    images: ["https://yourdomain.com/og-home.jpg"],
+      "Công cụ xem lịch âm dương, ngày tốt, giờ hoàng đạo, đổi ngày chính xác nhất Việt Nam.",
+    images: [`${CONFIG.SITE.DOMAIN}/og-lich-am.jpg`],
   },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
+
     <html lang="vi">
       <body className="bg-gray-50 text-gray-900 min-h-screen flex flex-col font-sans">
         {/* ✅ Banner quảng cáo đầu trang */}

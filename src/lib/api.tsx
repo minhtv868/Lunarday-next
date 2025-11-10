@@ -6,23 +6,13 @@ import { Match } from "@/types/match";
 import https from "https";
 import { Seo } from "@/types/seo";
 import { XemNgayTotXauModel } from "@/types/xemngay";
-// Configuration
-const CONFIG = {
-  API_KEY: process.env.NEXT_PUBLIC_API_KEY || "1234",
-  API_BASE: process.env.NEXT_PUBLIC_API_BASE || "https://localhost:7008",
-  SITE_ID: Number(process.env.NEXT_PUBLIC_SITE_ID) || 1,
-  DEFAULT_PAGE_SIZE: 20,
-  DEFAULT_CATEGORY_ID: 1,
-  DEFAULT_REVIEW_STATUS_ID: 1,
-  REQUEST_TIMEOUT: 10000,
-} as const;
-
+import { CONFIG } from "@/constants/config";
 // API Client setup
 const api = axios.create({
-  baseURL: CONFIG.API_BASE,
-  timeout: CONFIG.REQUEST_TIMEOUT,
+  baseURL: CONFIG.API.API_BASE,
+  timeout: CONFIG.API.REQUEST_TIMEOUT,
   headers: {
-    "x-api-key": CONFIG.API_KEY,
+    "x-api-key": CONFIG.API.API_KEY,
     "Content-Type": "application/json",
   },
   httpsAgent: new https.Agent({
@@ -81,7 +71,7 @@ interface GetCategoriesParams {
 export const articleApi = {
   async getAll(): Promise<Article[]> {
     try {
-      const response = await api.get<Article[]>("/api/Article/GetAllBySite");
+      const response = await api.get<Article[]>("/Article/GetAllBySite");
       return response.data;
     } catch (error) {
       console.error("Failed to fetch articles:", error);
@@ -93,10 +83,10 @@ export const articleApi = {
     const {
       keywords = "",
       page = 1,
-      pageSize = CONFIG.DEFAULT_PAGE_SIZE,
-      categoryId = CONFIG.DEFAULT_CATEGORY_ID,
-      reviewStatusId = CONFIG.DEFAULT_REVIEW_STATUS_ID,
-      siteId = CONFIG.SITE_ID
+      pageSize = CONFIG.API.DEFAULT_PAGE_SIZE,
+      categoryId = CONFIG.API.DEFAULT_CATEGORY_ID,
+      reviewStatusId = CONFIG.API.DEFAULT_REVIEW_STATUS_ID,
+      siteId = CONFIG.API.SITE_ID
     } = params;
 
     try {
@@ -115,7 +105,7 @@ export const articleApi = {
 
   async getById(id: string | number): Promise<Article> {
     try {
-      const response = await api.get<Article>(`/api/Article/GetById?id=${id}`);
+      const response = await api.get<Article>(`/Article/GetById?id=${id}`);
       if (!response.data) {
         throw new Error("Article not found");
       }
@@ -129,7 +119,7 @@ export const articleApi = {
 
 export const categoryApi = {
   async getAll(params: GetCategoriesParams = {}): Promise<Category[]> {
-    const { siteId = CONFIG.SITE_ID } = params;
+    const { siteId = CONFIG.API.SITE_ID } = params;
 
     try {
       const response = await api.get<Category[]>(
@@ -186,7 +176,7 @@ export const xemNgayApi = {
     Promise<XemNgayTotXauModel> 
   {
     try {
-      const response = await api.get("/api/TuVi/LichNgay", { params });
+      const response = await api.get(`${CONFIG.API.ENDPOINTS.LICHNGAY}`, { params });
 
       const result = response.data;
 

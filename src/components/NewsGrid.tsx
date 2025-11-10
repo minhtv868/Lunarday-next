@@ -61,7 +61,7 @@ export default function NewsGrid({ initialArticles = [] }: NewsGridProps) {
     }
   };
 
-  const featuredArticles = articles.slice(0, 4); // Top 3 for featured section
+  const featuredArticles = articles.slice(0, 4);
   const regularArticles = articles.slice(4);
 
   return (
@@ -81,63 +81,68 @@ export default function NewsGrid({ initialArticles = [] }: NewsGridProps) {
       </Head>
 
       <div className="min-h-screen bg-gray-50">
-        {/* Header */}
-        <div className="bg-white border-b shadow-sm">
-          <div className="max-w-7xl mx-auto px-4 py-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+        {/* Header - Mobile Optimized */}
+        <div className="bg-white border-b shadow-sm sticky top-0 z-10">
+          <div className="max-w-7xl mx-auto px-3 sm:px-4 py-4 sm:py-6">
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex-1 min-w-0">
+                <h1 className="text-xl sm:text-2xl md:text-4xl font-bold text-gray-900 mb-1 sm:mb-2 truncate">
                   Tin Tức Hôm Nay
                 </h1>
-                <p className="text-gray-600 flex items-center">
-                  <Clock size={16} className="mr-1" />
-                  {/* Cập nhật lúc: {new Date().toLocaleString('vi-VN')} */}
+                <p className="text-xs sm:text-sm text-gray-600 flex items-center">
+                  <Clock size={14} className="mr-1 flex-shrink-0 sm:w-4 sm:h-4" />
+                  <span className="truncate">Cập nhật liên tục</span>
                 </p>
               </div>
               
-              {/* View Toggle */}
-              <div className="flex bg-gray-100 rounded-lg p-1">
+              {/* View Toggle - Mobile Friendly */}
+              <div className="flex bg-gray-100 rounded-lg p-0.5 sm:p-1 flex-shrink-0">
                 <button
                   onClick={() => setViewMode("grid")}
-                  className={`p-2 rounded-md transition-colors ${
+                  className={`p-1.5 sm:p-2 rounded-md transition-all duration-200 touch-manipulation ${
                     viewMode === "grid"
                       ? "bg-white shadow-sm text-blue-600"
-                      : "text-gray-600"
+                      : "text-gray-600 active:bg-gray-200"
                   }`}
+                  aria-label="Chế độ lưới"
                 >
-                  <Grid size={20} />
+                  <Grid size={18} className="sm:w-5 sm:h-5" />
                 </button>
                 <button
                   onClick={() => setViewMode("list")}
-                  className={`p-2 rounded-md transition-colors ${
+                  className={`p-1.5 sm:p-2 rounded-md transition-all duration-200 touch-manipulation ${
                     viewMode === "list"
                       ? "bg-white shadow-sm text-blue-600"
-                      : "text-gray-600"
+                      : "text-gray-600 active:bg-gray-200"
                   }`}
+                  aria-label="Chế độ danh sách"
                 >
-                  <List size={20} />
+                  <List size={18} className="sm:w-5 sm:h-5" />
                 </button>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 py-8">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 py-4 sm:py-6 md:py-8">
           {loading && articles.length === 0 ? (
-            <div className="flex justify-center items-center py-20">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+            <div className="flex justify-center items-center py-16 sm:py-20">
+              <div className="flex flex-col items-center gap-3">
+                <div className="animate-spin rounded-full h-10 w-10 sm:h-12 sm:w-12 border-b-2 border-blue-600"></div>
+                <p className="text-sm text-gray-500">Đang tải tin tức...</p>
+              </div>
             </div>
           ) : (
             <>
-              {/* Featured News Section */}
+              {/* Featured News Section - Mobile Optimized */}
               {featuredArticles.length > 0 && (
-                <section className="mb-12">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-                    <TrendingUp className="mr-2 text-red-500" size={24} />
-                    Tin Nổi Bật
+                <section className="mb-8 sm:mb-12">
+                  <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 mb-4 sm:mb-6 flex items-center">
+                    <TrendingUp className="mr-2 text-red-500 flex-shrink-0" size={20} />
+                    <span>Tin Nổi Bật</span>
                   </h2>
                   
-                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
                     {/* Main featured article */}
                     {featuredArticles[0] && (
                       <div className="lg:col-span-2">
@@ -149,8 +154,8 @@ export default function NewsGrid({ initialArticles = [] }: NewsGridProps) {
                     )}
                     
                     {/* Side featured articles */}
-                    <div className="space-y-4">
-                      {featuredArticles.slice(0).map((article) => (
+                    <div className="space-y-3 sm:space-y-4">
+                      {featuredArticles.slice(1).map((article) => (
                         <NewsCard
                           key={article.id}
                           article={article}
@@ -162,18 +167,18 @@ export default function NewsGrid({ initialArticles = [] }: NewsGridProps) {
                 </section>
               )}
 
-              {/* Latest News Section */}
+              {/* Latest News Section - Mobile Optimized */}
               {regularArticles.length > 0 && (
                 <section>
-                  <h2 className="text-2xl font-bold text-gray-900 mb-6">
+                  <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 mb-4 sm:mb-6">
                     Tin Tức Mới Nhất
                   </h2>
                   
                   <div
                     className={
                       viewMode === "grid"
-                        ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-                        : "space-y-4"
+                        ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6"
+                        : "space-y-3 sm:space-y-4"
                     }
                   >
                     {regularArticles.map((article) => (
@@ -187,14 +192,14 @@ export default function NewsGrid({ initialArticles = [] }: NewsGridProps) {
                 </section>
               )}
 
-              {/* Empty State */}
+              {/* Empty State - Mobile Optimized */}
               {articles.length === 0 && !loading && (
-                <div className="text-center py-20">
-                  <div className="text-6xl mb-4">📰</div>
-                  <h3 className="text-2xl font-semibold text-gray-600 mb-2">
+                <div className="text-center py-16 sm:py-20 px-4">
+                  <div className="text-5xl sm:text-6xl mb-3 sm:mb-4">📰</div>
+                  <h3 className="text-xl sm:text-2xl font-semibold text-gray-600 mb-2">
                     Chưa có tin tức
                   </h3>
-                  <p className="text-gray-500">
+                  <p className="text-sm sm:text-base text-gray-500">
                     Hệ thống đang cập nhật nội dung mới
                   </p>
                 </div>
@@ -202,21 +207,26 @@ export default function NewsGrid({ initialArticles = [] }: NewsGridProps) {
             </>
           )}
 
-          {/* Load More Button */}
+          {/* Load More Button - Mobile Optimized */}
           {hasMorePages && articles.length > 0 && (
-            <div className="text-center mt-12">
+            <div className="text-center mt-8 sm:mt-12">
               <button
                 onClick={handleLoadMore}
                 disabled={loading}
-                className="bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white px-8 py-3 rounded-lg font-medium transition-colors duration-200 shadow-sm"
+                className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 active:bg-blue-800 disabled:opacity-50 disabled:cursor-not-allowed text-white px-6 sm:px-8 py-3 sm:py-3.5 rounded-lg font-medium transition-all duration-200 shadow-sm hover:shadow-md active:scale-[0.98] touch-manipulation text-sm sm:text-base"
               >
-                {loading ? "Đang tải..." : "Xem thêm tin tức"}
+                {loading ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                    <span>Đang tải...</span>
+                  </span>
+                ) : (
+                  "Xem thêm tin tức"
+                )}
               </button>
             </div>
           )}
         </div>
-
-       
       </div>
     </>
   );

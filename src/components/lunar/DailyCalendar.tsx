@@ -5,12 +5,13 @@ import CalendarCalculator from "viet-lunar-calendar";
 import { XemNgayTotXauModel } from "@/types/xemngay";
 import { xemNgayApi } from "@/lib/api";
 import { useEffect, useState } from "react";
-import { THANG } from "@/constants/config";
+import { CONFIG } from "@/constants/config";
+import { formatDate } from "@/app/utils/format";
 
 interface DailyCalendarProps {
   date?: string; // "dd-mm-yyyy"
 }
-
+const THANG = CONFIG.CALENDAR.THANG;
 export default function DailyCalendar({ date }: DailyCalendarProps) {
   const [resulDay, setDataHomNay] = useState<XemNgayTotXauModel | null>(null);
   const [currentDate, setCurrentDate] = useState<Date>(() => {
@@ -75,6 +76,24 @@ export default function DailyCalendar({ date }: DailyCalendarProps) {
   const dayNumber = resulDay?.solarDate
     ? new Date(resulDay.solarDate).getDate()
     : "?";
+  const dateSolar = resulDay?.solarDate ? new Date(resulDay.solarDate) : undefined;
+  const daySolar = dateSolar ? dateSolar.getDate() : "?";
+  const monthSolar = dateSolar ? dateSolar.getMonth() + 1 : "?";
+  const yearSolar = dateSolar ? dateSolar.getFullYear() : "?";
+  const dateStr = dateSolar ? formatDate(dateSolar) : "";
+
+  let yesterdayStr = "";
+  let tomorrowStr = "";
+
+  if (dateSolar) {
+    const yesterday = new Date(dateSolar);
+    yesterday.setDate(dateSolar.getDate() - 1);
+    yesterdayStr = formatDate(yesterday);
+
+    const tomorrow = new Date(dateSolar);
+    tomorrow.setDate(dateSolar.getDate() + 1);
+    tomorrowStr = formatDate(tomorrow);
+  }
 
   return (
     <div className="w-full max-w-md mx-auto p-3 sm:p-4">
@@ -108,8 +127,7 @@ export default function DailyCalendar({ date }: DailyCalendarProps) {
             {/* Month/Year Info */}
             <div className="text-center">
               <h3 className="text-sm font-bold uppercase tracking-wider opacity-95">
-                Tháng {resulDay?.lunarMonth ?? "?"} Năm{" "}
-                {resulDay?.lunarYear ?? "?"}
+                Tháng {monthSolar ?? "?"} Năm {yearSolar ?? "?"}
               </h3>
               <p className="text-base sm:text-lg font-medium mt-1 capitalize">
                 {weekday}
@@ -301,13 +319,28 @@ export default function DailyCalendar({ date }: DailyCalendarProps) {
             </button>
             <p className="text-xs text-gray-500 font-medium">
               {currentDate.toLocaleDateString("vi-VN")}
-            </p>
+            </p> 
           </div>
         </div> */}
         <div className="flex justify-between text-xs text-pink-600 font-medium mb-6">
-          <button className="hover:underline pl-5">Hôm qua</button>
-          <button className="hover:underline">Hôm nay</button>
-          <button className="hover:underline pr-5">Ngày mai</button>
+          <Link
+            href={CONFIG.PAGES.LICHAMDUONGNGAY + yesterdayStr}
+            className="hover:underline pl-5"
+          >
+            Hôm qua
+          </Link>
+          <Link
+            href={CONFIG.PAGES.LICHAMDUONGNGAY + dateStr}
+            className="hover:underline"
+          >
+            Hôm nay
+          </Link>
+          <Link
+            href={CONFIG.PAGES.LICHAMDUONGNGAY + tomorrowStr}
+            className="hover:underline pr-5"
+          >
+            Ngày mai
+          </Link>
         </div>
       </div>
 
