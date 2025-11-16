@@ -1,7 +1,7 @@
 
 
 
-import { SITE_DOMAIN } from '@/constants/config';
+
 import GiaVangPageClient from './GiaVangPageClient';
 
 export async function generateMetadata() {
@@ -12,7 +12,7 @@ export async function generateMetadata() {
     openGraph: {
       title: 'Giá vàng hôm nay',
       description: 'Cập nhật giá vàng trong nước từ các thương hiệu lớn.',
-      url: SITE_DOMAIN + '/gia-vang',
+      url:   '/gia-vang',
       siteName: 'Giá vàng Việt Nam',
       type: 'website',
       images: [
