@@ -1,191 +1,232 @@
+// app/news/page.tsx
 'use client';
 
 import { useState } from 'react';
-import { PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line } from 'recharts';
-import { TrendingUp, TrendingDown, Wallet, Target,PiggyBank } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
 
-//const COLORS = ['#3B82F6', '#EF4444', '#10B981', '#F59E0B', '#8B5CF6', '#F97316'];
+interface NewsArticle {
+  id: number;
+  title: string;
+  excerpt: string;
+  content: string;
+  category: string;
+  author: string;
+  date: string;
+  image: string;
+  readTime: string;
+}
 
-export default function Dashboard() {
-  const [user] = useState({
-    name: 'Minh Anh',
-    totalBalance: 15500000,
-    monthlyIncome: 8000000,
-    monthlySavings: 2000000,
-  });
+export default function NewsPage() {
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
-  const expenseData = [
-    { name: 'Ăn uống', value: 2500000, color: '#3B82F6' },
-    { name: 'Mua sắm', value: 1800000, color: '#EF4444' },
-    { name: 'Giải trí', value: 1200000, color: '#10B981' },
-    { name: 'Di chuyển', value: 800000, color: '#F59E0B' },
-    { name: 'Học tập', value: 500000, color: '#8B5CF6' },
+  // Dữ liệu mẫu
+  const newsArticles: NewsArticle[] = [
+    {
+      id: 1,
+      title: 'Công nghệ AI đang thay đổi ngành công nghiệp như thế nào',
+      excerpt: 'Trí tuệ nhân tạo đang tạo ra cuộc cách mạng trong nhiều lĩnh vực từ y tế đến giáo dục...',
+      content: 'Nội dung đầy đủ bài viết...',
+      category: 'Công nghệ',
+      author: 'Nguyễn Văn A',
+      date: '2024-10-25',
+      image: '/api/placeholder/800/400',
+      readTime: '5 phút đọc'
+    },
+    {
+      id: 2,
+      title: 'Xu hướng phát triển web năm 2024',
+      excerpt: 'Các framework và công nghệ mới đang định hình tương lai của phát triển web...',
+      content: 'Nội dung đầy đủ bài viết...',
+      category: 'Công nghệ',
+      author: 'Trần Thị B',
+      date: '2024-10-24',
+      image: '/api/placeholder/800/400',
+      readTime: '7 phút đọc'
+    },
+    {
+      id: 3,
+      title: 'Khởi nghiệp trong thời đại số',
+      excerpt: 'Những bài học quý giá từ các startup thành công trong lĩnh vực công nghệ...',
+      content: 'Nội dung đầy đủ bài viết...',
+      category: 'Kinh doanh',
+      author: 'Lê Văn C',
+      date: '2024-10-23',
+      image: '/api/placeholder/800/400',
+      readTime: '6 phút đọc'
+    },
+    {
+      id: 4,
+      title: 'Bảo mật thông tin trong kỷ nguyên số',
+      excerpt: 'Các biện pháp bảo vệ dữ liệu cá nhân và doanh nghiệp trong môi trường mạng...',
+      content: 'Nội dung đầy đủ bài viết...',
+      category: 'Bảo mật',
+      author: 'Phạm Thị D',
+      date: '2024-10-22',
+      image: '/api/placeholder/800/400',
+      readTime: '8 phút đọc'
+    },
+    {
+      id: 5,
+      title: 'Marketing số hiện đại',
+      excerpt: 'Chiến lược marketing hiệu quả trong thời đại mạng xã hội và công nghệ...',
+      content: 'Nội dung đầy đủ bài viết...',
+      category: 'Marketing',
+      author: 'Hoàng Văn E',
+      date: '2024-10-21',
+      image: '/api/placeholder/800/400',
+      readTime: '5 phút đọc'
+    },
+    {
+      id: 6,
+      title: 'Tương lai của thương mại điện tử',
+      excerpt: 'E-commerce đang phát triển với tốc độ chóng mặt, mở ra nhiều cơ hội mới...',
+      content: 'Nội dung đầy đủ bài viết...',
+      category: 'Kinh doanh',
+      author: 'Đỗ Thị F',
+      date: '2024-10-20',
+      image: '/api/placeholder/800/400',
+      readTime: '6 phút đọc'
+    }
   ];
 
-  const monthlyTrend = [
-    { month: 'T1', income: 7500000, expense: 5200000 },
-    { month: 'T2', income: 8200000, expense: 5800000 },
-    { month: 'T3', income: 7800000, expense: 6200000 },
-    { month: 'T4', income: 8500000, expense: 5500000 },
-    { month: 'T5', income: 8000000, expense: 6800000 },
-    { month: 'T6', income: 8200000, expense: 6200000 },
-  ];
+  const categories = ['all', ...Array.from(new Set(newsArticles.map(article => article.category)))];
 
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('vi-VN', {
-      style: 'currency',
-      currency: 'VND',
-    }).format(amount);
+  const filteredArticles = selectedCategory === 'all' 
+    ? newsArticles 
+    : newsArticles.filter(article => article.category === selectedCategory);
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('vi-VN', { 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    });
   };
 
   return (
-    <section id="dashboard" className="py-8">
-      <div className="max-w-7xl mx-auto px-4">
-        {/* Welcome Section */}
-        <div className="mb-8 animate-fade-in">
-          <h2 className="text-3xl font-bold text-gray-800 mb-2">
-            Xin chào, {user.name}! 👋
-          </h2>
-          <p className="text-gray-600">Hôm nay là ngày tuyệt vời để quản lý tài chính của bạn</p>
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Tiêu đề trang */}
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold text-gray-900 mb-2">
+            Tin tức & Bài viết
+          </h1>
+          <p className="text-gray-600">
+            Cập nhật những tin tức mới nhất về công nghệ, kinh doanh và nhiều hơn nữa
+          </p>
         </div>
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <div className="glass-effect rounded-2xl p-6 card-hover animate-slide-up">
-            <div className="flex items-center justify-between mb-4">
-              <div className="p-3 bg-blue-100 rounded-full">
-                <Wallet className="text-blue-600" size={24} />
-              </div>
-              <TrendingUp className="text-green-500" size={20} />
-            </div>
-            <h3 className="text-sm font-medium text-gray-600 mb-1">Tổng số dư</h3>
-            <p className="text-2xl font-bold text-gray-800">{formatCurrency(user.totalBalance)}</p>
-            <p className="text-xs text-green-600 mt-1">+12% so với tháng trước</p>
-          </div>
-
-          <div className="glass-effect rounded-2xl p-6 card-hover animate-slide-up" style={{animationDelay: '0.1s'}}>
-            <div className="flex items-center justify-between mb-4">
-              <div className="p-3 bg-green-100 rounded-full">
-                <TrendingUp className="text-green-600" size={24} />
-              </div>
-              <TrendingUp className="text-green-500" size={20} />
-            </div>
-            <h3 className="text-sm font-medium text-gray-600 mb-1">Thu nhập tháng</h3>
-            <p className="text-2xl font-bold text-gray-800">{formatCurrency(user.monthlyIncome)}</p>
-            <p className="text-xs text-green-600 mt-1">+5% so với tháng trước</p>
-          </div>
-
-          <div className="glass-effect rounded-2xl p-6 card-hover animate-slide-up" style={{animationDelay: '0.2s'}}>
-            <div className="flex items-center justify-between mb-4">
-              <div className="p-3 bg-purple-100 rounded-full">
-                <PiggyBank className="text-purple-600" size={24} />
-              </div>
-              <TrendingUp className="text-green-500" size={20} />
-            </div>
-            <h3 className="text-sm font-medium text-gray-600 mb-1">Tiết kiệm tháng</h3>
-            <p className="text-2xl font-bold text-gray-800">{formatCurrency(user.monthlySavings)}</p>
-            <p className="text-xs text-green-600 mt-1">+25% so với tháng trước</p>
-          </div>
-
-          <div className="glass-effect rounded-2xl p-6 card-hover animate-slide-up" style={{animationDelay: '0.3s'}}>
-            <div className="flex items-center justify-between mb-4">
-              <div className="p-3 bg-orange-100 rounded-full">
-                <Target className="text-orange-600" size={24} />
-              </div>
-              <TrendingDown className="text-red-500" size={20} />
-            </div>
-            <h3 className="text-sm font-medium text-gray-600 mb-1">Chi tiêu tháng</h3>
-            <p className="text-2xl font-bold text-gray-800">{formatCurrency(6800000)}</p>
-            <p className="text-xs text-red-600 mt-1">+8% so với tháng trước</p>
-          </div>
+        {/* Bộ lọc danh mục */}
+        <div className="mb-8 flex flex-wrap gap-3">
+          {categories.map((category) => (
+            <button
+              key={category}
+              onClick={() => setSelectedCategory(category)}
+              className={`px-4 py-2 rounded-full font-medium transition-colors ${
+                selectedCategory === category
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-white text-gray-700 hover:bg-gray-100'
+              }`}
+            >
+              {category === 'all' ? 'Tất cả' : category}
+            </button>
+          ))}
         </div>
 
-        {/* Charts Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-          {/* Expense Breakdown */}
-          <div className="glass-effect rounded-2xl p-6 animate-fade-in">
-            <h3 className="text-xl font-bold text-gray-800 mb-6">Chi tiêu theo danh mục</h3>
-            <div className="h-64">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={expenseData}
-                    cx="50%"
-                    cy="50%"
-                    outerRadius={80}
-                    fill="#8884d8"
-                    dataKey="value"
-                  >
-                    {expenseData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                  </Pie>
-                  <Tooltip formatter={(value) => formatCurrency(Number(value))} />
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
-            <div className="mt-4 grid grid-cols-2 gap-2">
-              {expenseData.map((item, index) => (
-                <div key={index} className="flex items-center space-x-2">
-                  <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }}></div>
-                  <span className="text-sm text-gray-600">{item.name}</span>
+        {/* Bài viết nổi bật */}
+        {filteredArticles.length > 0 && (
+          <div className="mb-12">
+            <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+              <div className="grid md:grid-cols-2 gap-0">
+                <div className="relative h-64 md:h-full">
+                  <Image
+                    src={filteredArticles[0].image}
+                    alt={filteredArticles[0].title}
+                    fill
+                    className="object-cover"
+                  />
                 </div>
-              ))}
+                <div className="p-8 flex flex-col justify-center">
+                  <span className="inline-block px-3 py-1 text-sm font-semibold text-blue-600 bg-blue-100 rounded-full mb-4 w-fit">
+                    {filteredArticles[0].category}
+                  </span>
+                  <h2 className="text-3xl font-bold text-gray-900 mb-4">
+                    {filteredArticles[0].title}
+                  </h2>
+                  <p className="text-gray-600 mb-6">
+                    {filteredArticles[0].excerpt}
+                  </p>
+                  <div className="flex items-center text-sm text-gray-500 mb-6">
+                    <span>{filteredArticles[0].author}</span>
+                    <span className="mx-2">•</span>
+                    <span>{formatDate(filteredArticles[0].date)}</span>
+                    <span className="mx-2">•</span>
+                    <span>{filteredArticles[0].readTime}</span>
+                  </div>
+                  <Link 
+                    href={`/news/${filteredArticles[0].id}`}
+                    className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors w-fit"
+                  >
+                    Đọc thêm
+                  </Link>
+                </div>
+              </div>
             </div>
           </div>
+        )}
 
-          {/* Monthly Trend */}
-          <div className="glass-effect rounded-2xl p-6 animate-fade-in">
-            <h3 className="text-xl font-bold text-gray-800 mb-6">Xu hướng thu chi</h3>
-            <div className="h-64">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={monthlyTrend}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="month" />
-                  <YAxis tickFormatter={(value) => `${value / 1000000}M`} />
-                  <Tooltip formatter={(value) => formatCurrency(Number(value))} />
-                  <Line type="monotone" dataKey="income" stroke="#10B981" strokeWidth={3} name="Thu nhập" />
-                  <Line type="monotone" dataKey="expense" stroke="#EF4444" strokeWidth={3} name="Chi tiêu" />
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
+        {/* Danh sách bài viết */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {filteredArticles.slice(1).map((article) => (
+            <article key={article.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow">
+              <div className="relative h-48">
+                <Image
+                  src={article.image}
+                  alt={article.title}
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <div className="p-6">
+                <span className="inline-block px-3 py-1 text-xs font-semibold text-blue-600 bg-blue-100 rounded-full mb-3">
+                  {article.category}
+                </span>
+                <h3 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2">
+                  {article.title}
+                </h3>
+                <p className="text-gray-600 mb-4 line-clamp-3">
+                  {article.excerpt}
+                </p>
+                <div className="flex items-center text-sm text-gray-500 mb-4">
+                  <span>{article.author}</span>
+                  <span className="mx-2">•</span>
+                  <span>{formatDate(article.date)}</span>
+                </div>
+                <Link 
+                  href={`/news/${article.id}`}
+                  className="text-blue-600 font-medium hover:text-blue-700 flex items-center"
+                >
+                  Đọc thêm
+                  <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </Link>
+              </div>
+            </article>
+          ))}
         </div>
 
-        {/* Quick Actions */}
-        <div className="glass-effect rounded-2xl p-6 animate-fade-in">
-          <h3 className="text-xl font-bold text-gray-800 mb-6">Thao tác nhanh</h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <button className="flex flex-col items-center p-4 rounded-xl bg-blue-50 hover:bg-blue-100 transition-colors">
-              <div className="p-3 bg-blue-500 rounded-full mb-2">
-                <TrendingUp className="text-white" size={20} />
-              </div>
-              <span className="text-sm font-medium text-gray-700">Thêm thu nhập</span>
-            </button>
-            
-            <button className="flex flex-col items-center p-4 rounded-xl bg-red-50 hover:bg-red-100 transition-colors">
-              <div className="p-3 bg-red-500 rounded-full mb-2">
-                <TrendingDown className="text-white" size={20} />
-              </div>
-              <span className="text-sm font-medium text-gray-700">Thêm chi tiêu</span>
-            </button>
-            
-            <button className="flex flex-col items-center p-4 rounded-xl bg-green-50 hover:bg-green-100 transition-colors">
-              <div className="p-3 bg-green-500 rounded-full mb-2">
-                <Target className="text-white" size={20} />
-              </div>
-              <span className="text-sm font-medium text-gray-700">Đặt mục tiêu</span>
-            </button>
-            
-            <button className="flex flex-col items-center p-4 rounded-xl bg-purple-50 hover:bg-purple-100 transition-colors">
-              <div className="p-3 bg-purple-500 rounded-full mb-2">
-                <PiggyBank className="text-white" size={20} />
-              </div>
-              <span className="text-sm font-medium text-gray-700">Tiết kiệm</span>
-            </button>
+        {/* Thông báo khi không có bài viết */}
+        {filteredArticles.length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-gray-500 text-lg">
+              Không có bài viết nào trong danh mục này
+            </p>
           </div>
-        </div>
+        )}
       </div>
-    </section>
+    </div>
   );
 }
